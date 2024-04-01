@@ -7,6 +7,20 @@
     "servers": [
         {"url": "https://43c3-60-250-32-239.ngrok-free.app"}
     ],
+    "components": {
+        "parameters": {
+            "GlobalHeader": {
+                "name": "ngrok-skip-browser-warning",
+                "in": "header",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "default": "69420"
+                },
+                "description": "A global header applied to all endpoints"
+            }
+        }
+    },
     "paths": {
         "/api/login": {
             "post": {
@@ -129,7 +143,8 @@
                             "default": "api_session=your_session_value"
                         },
                         "required": true
-                    }
+                    },
+                    {"$ref": "#/components/parameters/GlobalHeader"}
                 ],
                 "responses": {
                     "200": {
