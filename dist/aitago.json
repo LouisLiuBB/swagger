@@ -5,7 +5,7 @@
         "version": "1.0"
     },
     "servers": [
-        {"url": "https://0c37-60-250-32-239.ngrok-free.app"}
+        {"url": "https://43c3-60-250-32-239.ngrok-free.app"}
     ],
     "paths": {
         "/api/login": {
