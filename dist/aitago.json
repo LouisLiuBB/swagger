@@ -1,0 +1,890 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "LineOA API",
+        "version": "1.0"
+    },
+    "servers": [
+        {"url": "https://0c37-60-250-32-239.ngrok-free.app"}
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "login",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user1@a.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "required": ["email", "password"]
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "headers": {
+                            "Content-Type": {
+                                "description": "Content Type",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "Set-Cookie": {
+                                "description": "Session ID",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{tenant_id}/api/upload": {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "description": "tenant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "upload"
+                ],
+                "summary": "upload",
+                "operationId": "upload",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "uploadFile": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": ["uploadFile"]
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "連結: /storage/uploads/{slug}"
+                    }
+                }
+            }
+        },
+        "/api/material/campaigns": {
+            "get": {
+                "tags": [
+                    "campaigns"
+                ],
+                "summary": "all campaigns",
+                "operationId": "campaigns.index",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "campaigns"
+                ],
+                "summary": "create campaigns",
+                "operationId": "campaigns.store",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the campaign"
+                                    },
+                                    "desc": {
+                                        "type": "string",
+                                        "description": "desc"
+                                    },
+                                    "image":{ 
+                                        "type": "string",
+                                        "description": "image"
+                                    }
+                                },
+                                "required": ["name"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/api/material/campaigns/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of the campaign to get",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "campaigns"
+                ],
+                "summary": "get one campaigns",
+                "operationId": "campaigns.show",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "campaigns"
+                ],
+                "summary": "update campaign",
+                "operationId": "campaigns.update",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the campaign"
+                                    }
+                                },
+                                "required": ["name"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "campaigns"
+                ],
+                "summary": "delete campaign",
+                "operationId": "campaigns.destroy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            }
+        },
+        "/api/material/templates": {
+            "get": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "all templates",
+                "operationId": "templates.index",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "create templates",
+                "operationId": "templates.store",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the templates"
+                                    },
+                                    "campaign_id": {
+                                        "type": "integer",
+                                        "description": "The campaign_id of the templates"
+                                    },
+                                    "data": {
+                                        "type": "string",
+                                        "description": "json type"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "The type of the templates, etc: fb,line",
+                                        "default": "fb"
+                                    }
+                                },
+                                "required": ["name","campaign_id", "data","type"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/api/material/templates/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of the templates to get",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "get one templates",
+                "operationId": "templates.show",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "templates not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "update templates",
+                "operationId": "templates.update",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the templates"
+                                    },
+                                    "campaign_id": {
+                                        "type": "integer",
+                                        "description": "The campaign_id of the templates"
+                                    },
+                                    "data": {
+                                        "type": "string",
+                                        "description": "json type"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "The type of the templates, etc: fb,line",
+                                        "default": "fb"
+                                    }
+                                },
+                                "required": ["name","campaign_id", "data","type"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "templates not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "delete templates",
+                "operationId": "templates.destroy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "templates not found"
+                    }
+                }
+            }
+        },
+        "/api/material/templates/by/campaign/{campaignId}": {
+            "parameters": [
+                {
+                    "name": "campaignId",
+                    "in": "path",
+                    "description": "campaignId",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "templates"
+                ],
+                "summary": "getByCampaignId",
+                "operationId": "getByCampaignId",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/{tenant_id}/api/material/materials": {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "description": "tenant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "materials"
+                ],
+                "summary": "all materials",
+                "operationId": "materials.index",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "materials"
+                ],
+                "summary": "create materials",
+                "operationId": "materials.store",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the materials"
+                                    },
+                                    "template_id": {
+                                        "type": "integer",
+                                        "description": "The template_id of the materials"
+                                    },
+                                    "data": {
+                                        "type": "string",
+                                        "description": "json type"
+                                    },
+                                    "audience_id": {
+                                        "type": "string",
+                                        "description": "受眾人群id"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "The type of the materials, etc: fb,line",
+                                        "default": "fb"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "The note of the materials"
+                                    }
+                                },
+                                "required": ["name","template_id", "data","type"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/{tenant_id}/api/material/materials/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of the materials to get",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "description": "tenant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "materials"
+                ],
+                "summary": "get one materials",
+                "operationId": "materials.show",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "materials not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "materials"
+                ],
+                "summary": "update materials",
+                "operationId": "materials.update",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the materials"
+                                    },
+                                    "template_id": {
+                                        "type": "integer",
+                                        "description": "The template_id of the materials"
+                                    },
+                                    "data": {
+                                        "type": "string",
+                                        "description": "json type"
+                                    },
+                                    "audience_id": {
+                                        "type": "string",
+                                        "description": "受眾人群id"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "The type of the materials, etc: fb,line",
+                                        "default": "fb"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "The note of the materials"
+                                    }
+                                },
+                                "required": ["name","campaign_id", "data","type"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "materials not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "materials"
+                ],
+                "summary": "delete materials",
+                "operationId": "materials.destroy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "materials not found"
+                    }
+                }
+            }
+        },
+        "/{tenant_id}/api/lineOA/material/broadcast": {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "description": "tenant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "lineOA"
+                ],
+                "summary": "lineOA 全發",
+                "operationId": "material/broadcast",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "material_id": {
+                                        "type": "integer",
+                                        "description": "素材id"
+                                    }
+                                },
+                                "required": ["material_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/{tenant_id}/api/lineOA/material/multicast": {
+            "parameters": [
+                {
+                    "name": "tenant_id",
+                    "in": "path",
+                    "description": "tenant_id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64",
+                        "default": 1
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "lineOA"
+                ],
+                "summary": "lineOA 分群眾發",
+                "operationId": "material/multicast",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "material_id": {
+                                        "type": "integer",
+                                        "description": "素材id"
+                                    },
+                                    "audience_id": {
+                                        "type": "string",
+                                        "description": "受眾人群id"
+                                    }
+                                },
+                                "required": ["material_id", "audience_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        }
+    }
+}
