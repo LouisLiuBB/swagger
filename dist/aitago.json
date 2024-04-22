@@ -231,6 +231,188 @@
                     }
                 }
             }
+        },
+        "/api/material/libs": {
+            "get": {
+                "tags": [
+                    "material libs"
+                ],
+                "summary": "all material libs",
+                "operationId": "material libs.index",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "material libs"
+                ],
+                "summary": "create material libs",
+                "operationId": "material libs.store",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the campaign"
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "description": "json"
+                                    }
+                                },
+                                "required": ["name", "data"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    }
+                }
+            }
+        },
+        "/api/material/libs/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of the material libs",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "material libs"
+                ],
+                "summary": "get one material libs",
+                "operationId": "material libs.show",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "material libs"
+                ],
+                "summary": "update material libs",
+                "operationId": "material libs.update",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "The name of the material libs"
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "description": "json"
+                                    }
+                                },
+                                "required": ["name", "data"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "material libs"
+                ],
+                "summary": "delete material libs",
+                "operationId": "material libs.destroy",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "Cookie",
+                        "schema": {
+                            "type": "string",
+                            "default": "api_session=your_session_value"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "404": {
+                        "description": "Campaign not found"
+                    }
+                }
+            }
         }
     }
 }
