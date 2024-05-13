@@ -232,7 +232,7 @@
                 }
             }
         },
-        "/api/material/libs": {
+        "{tenant_id}/api/material/libs": {
             "get": {
                 "tags": [
                     "material libs"
@@ -282,7 +282,11 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "description": "The name of the campaign"
+                                        "description": "The name"
+                                    },
+                                    "template_id": {
+                                        "type": "integer",
+                                        "description": "The template_id"
                                     },
                                     "data": {
                                         "type": "object",
@@ -301,7 +305,7 @@
                 }
             }
         },
-        "/api/material/libs/{id}": {
+        "{tenant_id}/api/material/libs/{id}": {
             "parameters": [
                 {
                     "name": "id",
@@ -367,6 +371,10 @@
                                     "name": {
                                         "type": "string",
                                         "description": "The name of the material libs"
+                                    },
+                                    "template_id": {
+                                        "type": "integer",
+                                        "description": "The template_id"
                                     },
                                     "data": {
                                         "type": "object",
